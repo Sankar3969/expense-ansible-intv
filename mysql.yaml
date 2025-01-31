@@ -1,14 +1,22 @@
 - name: mysql server creation
   hosts: mysql
+  vars:
+    mysql_login_pwd: root
+    mysql_pwd: ExpenseApp@1
   become: yes
   tasks:  
     - name: the sql server installation
       ansible.builtin.package:
         name: mysql-server
         state: present
-        
+
     - name: mysql-server servicestart
       ansible.builtin.service:
         name: mysqld
         state: started
         enabled: true
+    - name: Get the mysql-server info
+      community.mysql.mysql_info:
+        login_user:  {{ mysql_login_pwd }}
+        login_password: {{ mysql_pwd }}
+      ignore_errors: true
