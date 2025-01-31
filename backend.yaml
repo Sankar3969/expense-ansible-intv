@@ -30,12 +30,7 @@
       ansible.builtin.get_url:
         url: https://expense-builds.s3.us-east-1.amazonaws.com/expense-backend-v2.zip
         dest: /tmp/backend
-
-    - name: create app directory
-      ansible.builtin.command:
-        args:
-          chdir: /app
-
+        
     - name:  unarchive the folder
       ansible.builtin.unarchive:
         src: /tmp/backend
