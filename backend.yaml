@@ -41,3 +41,8 @@
       ansible.builtin.command: npm install
       args:
         chdir: /app
+    
+    - name: Copy file with owner and permissions
+      ansible.builtin.copy:
+        src: backend.service
+        dest: /etc/systemd/system/backend.service
