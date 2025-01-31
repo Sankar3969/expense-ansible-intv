@@ -34,4 +34,10 @@
     - name: create app directory
       ansible.builtin.command:
         args:
-        chdir: /app
+          chdir: /app
+
+    - name:  unarchive the folder
+      ansible.builtin.unarchive:
+        src: /tmp/backend
+        dest: /app
+        remote_src: yes
