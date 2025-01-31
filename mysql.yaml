@@ -17,6 +17,6 @@
         enabled: true
     - name: Get the mysql-server info
       community.mysql.mysql_info:
-        login_user:  {{ mysql_login_pwd }}
-        login_password: {{ mysql_pwd }}
+        login_user:  "{{ mysql_login_pwd }}"
+        login_password: "{{ mysql_pwd }}"
       ignore_errors: true
