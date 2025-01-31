@@ -3,7 +3,6 @@
   vars:
     mysql_login_user: root
     mysql_pwd: ExpenseApp@1
-    login_host: "mysql.sankardevops.shop"
   become: yes
   tasks:  
     - name: the PyMySQL server installation
@@ -28,7 +27,6 @@
       community.mysql.mysql_info:
         login_user:  "{{ mysql_login_user }}"
         login_password: "{{ mysql_pwd }}"
-        login_host: "{{ login_host }}"
       register: mysql_info
       ignore_errors: true
 
