@@ -1,31 +1,42 @@
 - name: mysql server creation
   hosts: mysql
   vars:
-    mysql_login_pwd: root
+    mysql_login_user: root
     mysql_pwd: ExpenseApp@1
   become: yes
   tasks:  
-    - name: the sql server installation
+    - name: the PyMySQL server installation
       ansible.builtin.pip:
         name: 
         - PyMySQL
         executable: pip3.9
         state: present
-    - name: the sql server installation
+
+    - name: the mysql server installation
       ansible.builtin.package:
         name: mysql-server
         state: present
+
     - name: mysql-server servicestart
       ansible.builtin.service:
         name: mysqld
         state: started
         enabled: true
+
     - name: Get the mysql-server info
       community.mysql.mysql_info:
-        login_user:  "{{ mysql_login_pwd }}"
+        login_user:  "{{ mysql_login_user }}"
         login_password: "{{ mysql_pwd }}"
       register: mysql_info
       ignore_errors: true
+
     - name: Print the Mysql-Info
       ansible.builtin.debug:
         msg: " Mysql info: {{mysql_info}}"
+
+    - name: Mysql password setting
+      community.mysql.mysql_user:
+        login_user: "{{ mysql_login_user }}"
+        login_password: "{{ mysql_pwd }}"
+        state: present
+      when: mysql_info.failed is True
