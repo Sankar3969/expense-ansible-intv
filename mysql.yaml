@@ -39,4 +39,4 @@
         login_user: "{{ mysql_login_user }}"
         login_password: "{{ mysql_pwd }}"
         state: present
-      when: mysql_info.failed is True
+      when: mysql_info.failed is true 
