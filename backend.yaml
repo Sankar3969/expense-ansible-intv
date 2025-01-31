@@ -7,7 +7,7 @@
         cmd: dnf module disable nodejs -y
 
     - name: enable the nodejs 20 version
-      ansible.builtin.shell: "{{ items }}"
+      ansible.builtin.shell: "{{ item }}"
       with_items:
         - dnf module enable nodejs:20 -y 
 
