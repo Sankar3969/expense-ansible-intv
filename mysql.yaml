@@ -6,10 +6,15 @@
   become: yes
   tasks:  
     - name: the sql server installation
+      ansible.builtin.pip:
+        name: 
+        - PyMySQL
+        executable: pip3.9
+        state: present
+    - name: the sql server installation
       ansible.builtin.package:
         name: mysql-server
         state: present
-
     - name: mysql-server servicestart
       ansible.builtin.service:
         name: mysqld
@@ -19,4 +24,8 @@
       community.mysql.mysql_info:
         login_user:  "{{ mysql_login_pwd }}"
         login_password: "{{ mysql_pwd }}"
+      register: mysql_info
       ignore_errors: true
+    - name: Print the Mysql-Info
+      ansible.builtin.debug:
+        msg: " Mysql info: {{mysql_info}}"
