@@ -1,0 +1,49 @@
+- name: frontend server configuration
+  hosts: frontend
+  become: yes
+  vars:
+    mysql_login_user: root
+    mysql_pwd: ExpenseApp@1
+    login_host: mysql.sankardevops.shop
+  tasks:
+    - name: disble the nodejs version
+      ansible.builtin.command: 
+        cmd: dnf module disable nodejs -y
+
+    - name: enable the nodejs 20 version
+      ansible.builtin.shell: "{{ item }}"
+      with_items:
+        - dnf module enable nodejs:20 -y 
+
+    - name: install the node js package
+      ansible.builtin.package:
+        name: 
+        - nodejs
+        state: present
+    
+    - name: remove the content from folder
+      ansible.builtin.file:
+        path: /usr/share/nginx/html/
+        state: absent
+
+    - name: Download file from a file path
+      ansible.builtin.get_url:
+        url: https://expense-builds.s3.us-east-1.amazonaws.com/expense-frontend-v2.zip
+        dest: /tmp/frontend
+   
+    - name:  unarchive the folder
+      ansible.builtin.unarchive:
+        src: /tmp/frontend
+        dest: /usr/share/nginx/html/
+        remote_src: yes
+
+    - name: Copy file with owner and permissions
+      ansible.builtin.copy:
+        src: expense.conf
+        dest: /etc/nginx/default.d/expense.conf
+
+    - name: start mysql server
+      ansible.builtin.service:
+        name: nginx
+        state: restarted
+        enabled: yes
