@@ -20,6 +20,12 @@
         name: 
         - nodejs
         state: present
+        
+    - name: start nginx server
+      ansible.builtin.service:
+        name: nginx
+        state: started
+        enabled: yes
     
     - name: remove the content from folder
       ansible.builtin.file:
