@@ -30,6 +30,11 @@
       ansible.builtin.get_url:
         url: https://expense-builds.s3.us-east-1.amazonaws.com/expense-frontend-v2.zip
         dest: /tmp/frontend
+
+    - name: create app directory
+      ansible.builtin.file:
+        path: /usr/share/nginx/html/
+        state: directory
    
     - name:  unarchive the folder
       ansible.builtin.unarchive:
@@ -42,7 +47,7 @@
         src: expense.conf
         dest: /etc/nginx/default.d/expense.conf
 
-    - name: start mysql server
+    - name: start nginx server
       ansible.builtin.service:
         name: nginx
         state: restarted
