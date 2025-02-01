@@ -21,34 +21,34 @@
         - nodejs
         state: present
     
-    # - name: remove the content from folder
-    #   ansible.builtin.file:
-    #     path: /usr/share/nginx/html/
-    #     state: absent
+    - name: remove the content from folder
+      ansible.builtin.file:
+        path: /usr/share/nginx/html/
+        state: absent
 
-    # - name: Download file from a file path
-    #   ansible.builtin.get_url:
-    #     url: https://expense-builds.s3.us-east-1.amazonaws.com/expense-frontend-v2.zip
-    #     dest: /tmp/frontend
+    - name: Download file from a file path
+      ansible.builtin.get_url:
+        url: https://expense-builds.s3.us-east-1.amazonaws.com/expense-frontend-v2.zip
+        dest: /tmp/frontend
 
-    # - name: create html directory
-    #   ansible.builtin.file:
-    #     path: /usr/share/nginx/html/
-    #     state: directory
+    - name: create html directory
+      ansible.builtin.file:
+        path: /usr/share/nginx/html/
+        state: directory
    
-    # - name:  unarchive the folder
-    #   ansible.builtin.unarchive:
-    #     src: /tmp/frontend
-    #     dest: /usr/share/nginx/html/
-    #     remote_src: yes
+    - name:  unarchive the folder
+      ansible.builtin.unarchive:
+        src: /tmp/frontend
+        dest: /usr/share/nginx/html/
+        remote_src: yes
 
-    # - name: Copy file with owner and permissions
-    #   ansible.builtin.copy:
-    #     src: expense.conf
-    #     dest: /etc/nginx/default.d/expense.conf
+    - name: Copy file with owner and permissions
+      ansible.builtin.copy:
+        src: expense.conf
+        dest: /etc/nginx/default.d/expense.conf
 
-    # - name: start nginx server
-    #   ansible.builtin.service:
-    #     name: nginx
-    #     state: restarted
-    #     enabled: yes
+    - name: start nginx server
+      ansible.builtin.service:
+        name: nginx
+        state: restarted
+        enabled: yes
