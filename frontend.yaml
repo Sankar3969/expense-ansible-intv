@@ -19,7 +19,7 @@
       ansible.builtin.package:
         name: 
         - nodejs
-        state: present
+        state: absent
     
     # - name: remove the content from folder
     #   ansible.builtin.file:
