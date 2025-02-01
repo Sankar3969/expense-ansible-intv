@@ -1,42 +1,38 @@
-- name: mysql server creation
+- name: mysql configuration
   hosts: mysql
-  vars:
-    mysql_login_user: root
-    mysql_pwd: "ExpenseApp@1"
   become: yes
-  tasks:  
-    - name: the PyMySQL server installation
-      ansible.builtin.pip:
-        name: 
-        - PyMySQL
-        executable: pip3.9
-        state: present
+  vars:
+    mysql_root_password: ExpenseApp@1
+    login_host: mysql.sankardevops.shop
+  tasks:
+  - name: ansible to install pymysql
+    ansible.builtin.pip:
+      name:
+      - PyMySQL
+      executable: pip3.9
+  - name: install MySQL Server
+    ansible.builtin.package:
+      name: mysql-server
+      state: absent
 
-    - name: the mysql server installation
-      ansible.builtin.package:
-        name: mysql-server
-        state: present
+  - name: start mysql server
+    ansible.builtin.service:
+      name: mysqld
+      state: started
+      enabled: yes
 
-    - name: mysql-server servicestart
-      ansible.builtin.service:
-        name: mysqld
-        state: started
-        enabled: true
+  - name: connect mysql server
+    community.mysql.mysql_info:
+      login_user: root
+      login_password: "{{ mysql_root_password }}"
+      login_host: "{{ login_host }}"
+    ignore_errors: true
+    register: mysql_info
 
-    - name: Get the mysql-server info
-      community.mysql.mysql_info:
-        login_user:  "{{ mysql_login_user }}"
-        login_password: "{{ mysql_pwd }}"
-      register: mysql_info
-      ignore_errors: true
+  - name: print mysql info
+    ansible.builtin.debug:
+      msg: "{{ mysql_info }}"
 
-    - name: Print the Mysql-Info
-      ansible.builtin.debug:
-        msg: " Mysql info: {{mysql_info}}"
-
-    - name: Mysql password setting
-      community.mysql.mysql_user:
-        name: "{{ mysql_login_user }}"
-        password: "{{ mysql_pwd }}"
-        state: present
-      when: mysql_info.failed is true 
+  - name: setup MySQL root password
+    ansible.builtin.command: "mysql_secure_installation --set-root-pass {{ mysql_root_password }}"
+    when: mysql_info.failed is true
