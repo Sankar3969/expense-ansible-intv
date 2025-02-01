@@ -2,7 +2,7 @@
   hosts: mysql
   vars:
     mysql_login_user: root
-    mysql_pwd: ExpenseApp@1
+    mysql_pwd: "ExpenseApp@1"
   become: yes
   tasks:  
     - name: the PyMySQL server installation
